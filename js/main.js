@@ -101,9 +101,7 @@ function notAuthorized() {
       checkAuth();
     } else {
       loginErrorMessage();
-    }
-    
-    
+    }     
     
   }
   
@@ -127,9 +125,7 @@ function checkAuth() {
 
 checkAuth();
 
-function createCardRestaurant(restaurant) {
-
-  const { image, kitchen, name, price, stars, products, time_of_delivery: timeOfDelivery } = restaurant;  
+function createCardRestaurant({ image, kitchen, name, price, stars, products, time_of_delivery: timeOfDelivery }) {
 
   const card = `
     <a href="#" class="card card-restaurant" data-products="${products}">
@@ -154,9 +150,7 @@ function createCardRestaurant(restaurant) {
 }
 
 
-function createGoodCard(goods) {
-
-  const { description, id, image, name, price } = goods;
+function createGoodCard({ description, id, image, name, price }) {
 
   const card = document.createElement('div');
   card.className = 'card';
@@ -201,14 +195,26 @@ function openGoods(event) {
     containerPromo.classList.add('hide');
     restaurants.classList.add('hide');
     menu.classList.remove('hide');
+    addRestaurantInfo(restaurant);
     getData(`./db/${restaurant.dataset.products}`).then(function(data) {
       data.forEach(createGoodCard);
     });
   }
-
 }
 
+function addRestaurantInfo(restaurant) {  
 
+  const name = restaurant.querySelector('.card-title').textContent;
+  const category = restaurant.querySelector('.category').textContent;
+  const rating = restaurant.querySelector('.rating').textContent;
+  const price = restaurant.querySelector('.price').textContent;
+  console.log(this);
+
+  menu.querySelector('.restaurant-title').textContent = name;
+  menu.querySelector('.rating').textContent = rating;
+  menu.querySelector('.price').textContent = price;
+  menu.querySelector('.category').textContent = category;
+}
 
 function init(params) {
   getData('./db/partners.json').then(function(data) {
